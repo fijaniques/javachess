@@ -16,7 +16,7 @@ public class Match {
 		blackPieces = createPieces(Color.BLACK);
 		whitePieces = createPieces(Color.WHITE);
 		board = new Board(blackPieces, whitePieces);
-		
+
 		while(!exit) {
 			board.printBoard(selectedPiece);
 			System.out.print("Choose the tile: ");
@@ -25,7 +25,7 @@ public class Match {
 			int currentX = board.convertInput(currentTile, 'x');
 			selectedPiece = board.getPiece(currentY, currentX);
 			board.printBoard(selectedPiece);
-			
+
 			System.out.printf("Tile to move to: ");
 			String nextTile = board.getTile();
 			int nextY = board.convertInput(nextTile, 'y');
@@ -34,7 +34,7 @@ public class Match {
 			selectedPiece = null;
 			System.out.println("_______________________________________");
 			System.out.println("\033[2J");
-			
+
 			clearConsole();
 		}
 	}

@@ -1,9 +1,4 @@
-/**
- * 
- */
-/**
- * @author filli
- *
- */
-module ConsoleChess {
+module Chess {
+	exports Main;
+	exports Pieces;
 }
