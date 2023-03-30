@@ -1,0 +1,9 @@
+/**
+ * 
+ */
+/**
+ * @author filli
+ *
+ */
+module ConsoleChess {
+}
