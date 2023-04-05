@@ -1,5 +1,6 @@
 package Main;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import Pieces.*;
 
@@ -18,25 +19,47 @@ public class Match {
 		board = new Board(blackPieces, whitePieces);
 
 		while(!exit) {
-			board.printBoard(selectedPiece);
-			System.out.print("Choose the tile: ");
-			String currentTile = board.getTile();
-			int currentY = board.convertInput(currentTile, 'y');
-			int currentX = board.convertInput(currentTile, 'x');
-			selectedPiece = board.getPiece(currentY, currentX);
-			board.printBoard(selectedPiece);
+			boolean unblocked = false;
+			int currentX = 0;
+			int currentY = 0;
+			
+			board.printBoard(selectedPiece); //PRINT NULL
+			
+			while(!unblocked) {
+				board.resetPossibleMovements();
+				System.out.print("Choose the tile: ");	
+				String currentTile = getTile(); //PICK THE SQUARE
+				currentY = board.convertInput(currentTile, Type.Y);
+				currentX = board.convertInput(currentTile, Type.X);
+				
+				selectedPiece = board.getPiece(currentY, currentX); //GET THE PIECE IN THAT SQUARE
+				
+				board.printBoard(selectedPiece); //PRINT WITH SELECTED PIECE
+				
+			    //printTest();
+			    
+			    unblocked = checkUnblocked(currentY, currentX);
+			    
+			    if(!unblocked) {
+			    	System.out.printf("This %s can't move%n", selectedPiece.getName());
+			    }			    
+			}			
 
 			System.out.printf("Tile to move to: ");
-			String nextTile = board.getTile();
-			int nextY = board.convertInput(nextTile, 'y');
-			int nextX = board.convertInput(nextTile, 'x');
-			board.movePiece(currentY, currentX, nextY, nextX);
+			String nextTile = getTile(); //PICK TILE TO MOVE TO
+			int nextY = board.convertInput(nextTile, Type.Y);
+			int nextX = board.convertInput(nextTile, Type.X);
+			board.movePiece(selectedPiece, currentY, currentX, nextY, nextX); //MOVE SELECTED PIECE TO THAT TILE
+			board.resetPossibleMovements();
 			selectedPiece = null;
 			System.out.println("_______________________________________");
-			System.out.println("\033[2J");
-
-			clearConsole();
 		}
+	}
+	
+	public String getTile() {
+		Scanner scan = new Scanner(System.in);
+		String tile = scan.nextLine();
+		return tile;
 	}
 	
 	public ArrayList<Piece> createPieces(Color color) {
@@ -63,6 +86,29 @@ public class Match {
 		return pieces;
 	}
 	
-	private void clearConsole() {
+	public boolean checkUnblocked(int currentY, int currentX) {
+		boolean unblocked = false;
+		for(int x = 0; x < 8; x++) { 
+			for(int y = 0; y < 8; y++) {
+				if(board.possibleMovements[y][x]) {
+					unblocked = true;
+				}
+			}
+		}
+		return unblocked;
+	}
+	
+	public void printTest() {
+		for(int x = 0; x < 8; x++) { 
+			for(int y = 0; y < 8; y++) {
+				if(board.possibleMovements[y][x]) {
+					System.out.print("[o]");
+				}
+				else {
+					System.out.print("[x]");
+				}				
+			}
+			System.out.println();
+		}
 	}
 }

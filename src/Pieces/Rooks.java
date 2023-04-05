@@ -1,5 +1,7 @@
 package Pieces;
 
+import Main.Board;
+
 public class Rooks{ //W 2658 B 265E
 	
 	public Rook left;
@@ -12,9 +14,9 @@ public class Rooks{ //W 2658 B 265E
 	}
 	
 	private void setInitialPos(Color color) {
-		int y = color == Color.WHITE ? 0 : 7;
+		int x = color == Color.WHITE ? 0 : 7;
 		
-		left.setInitialPos(y, 0);
-		right.setInitialPos(y, 7);
+		left.setInitialPos(0, x);
+		right.setInitialPos(7, x);
 	}
 }

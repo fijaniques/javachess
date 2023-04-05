@@ -1,27 +1,37 @@
 package Pieces;
-
 import java.util.ArrayList;
+import Main.Board;
 
 public class Piece {
 	
 	//POSIÇÃO
 	public int currentX;
 	public int currentY;
+	private boolean blocked;
 	
 	//PLAYER
 	public Color color;
 	
 	//PIECE
-	private String name;
-	private String symbol; //VAI COMPLICAR: USAR GETTYPE	
-	private boolean moved = false;
+	public String name; //VAI COMPLICAR: USAR GETTYPE
+	private String symbol;
+	public boolean moved = false;
+	
+	//BOARD
+	public Board board;
 	
 	public Piece(Color color) {
 		this.color = color;
+		this.name = name;
+		
 	}
 	
 	public String getSymbol() {
 		return symbol;
+	}
+	
+	public String getName() {
+		return name;
 	}
 	
 	public Color getColor() {
@@ -32,11 +42,19 @@ public class Piece {
 		return this.moved;
 	}
 	
-	public boolean getPossibleMovements(int x, int y) {
-		int xRange = 0;
-		int yRange = 1;		
-		boolean possible = false;
-		return possible;
+	public int getCurrentY() {
+		return currentY;
+	}
+	
+	public int getCurrentX() {
+		return currentX;
+	}
+	
+	public boolean getBlocked(int currentY, int currentX, int nextY, int nextX) {
+		return blocked;
+	}
+	
+	public void setPossibleMovements(Board board) {
 	}
 	
 	public void setInitialPos(int y, int x) {

@@ -1,7 +1,10 @@
 package Pieces;
 import java.util.ArrayList;
 
+import Main.Board;
+
 public class Pawns{ //W 2658 B 265E
+	Board board;
 	
 	public ArrayList<Pawn> pawnsList;
 	
@@ -11,9 +14,9 @@ public class Pawns{ //W 2658 B 265E
 	}
 	
 	private void setInitialPos(Color color) {
-		int y = color == Color.WHITE ? 1 : 6;
+		int x = color == Color.WHITE ? 1 : 6;
 		
-		for(int x = 0; x < 8; x++) {
+		for(int y = 0; y < 8; y++) {
 			Pawn p = new Pawn(color);
 			p.setInitialPos(y, x);
 			pawnsList.add(p);

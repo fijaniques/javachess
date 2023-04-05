@@ -1,10 +1,15 @@
 package Pieces;
 import java.util.ArrayList;
+import Main.Board;
+
+import Main.Board;
 
 public class Pawn extends Piece{ // W 2659 B 265F
+	Board board;
 	
 	public Pawn(Color color) {
 		super(color);
+		name = getClass().getCanonicalName();
 		setSymbol(color);
 	}
 	
@@ -12,28 +17,35 @@ public class Pawn extends Piece{ // W 2659 B 265F
 		setSymbol("\u2659");
 	}
 	
-	public boolean getPossibleMovements(int y, int x) {
-		int xRange = 0;
-		int yRange = 1;
-		
-		boolean possible = false;
-		
-		if(!getMoved()) {
-			yRange = 2;
+	public void setPossibleMovements(Board board) {
+		this.board = board;
+
+		int nextY = currentY;
+		int nextX = currentX;
+
+		//WHITE
+		if(color == Color.WHITE) {
+			nextX++;
+			if(board.getPiece(currentY, nextX) == null) {
+				board.setPossibleMovements(currentY, nextX, true);
+				if(!moved) {
+					nextX++;
+					if(board.getPiece(currentY, nextX) == null) {
+						board.setPossibleMovements(currentY, nextX, true);
+					}
+				}
+			}
 		}else {
-			yRange = 1;
+			nextX--;
+			if(board.getPiece(currentY, nextX) == null) {
+				board.setPossibleMovements(currentY, nextX, true);
+				if(!moved) {
+					nextX--;
+					if(board.getPiece(currentY, nextX) == null) {
+						board.setPossibleMovements(currentY, nextX, true);
+					}
+				}
+			}
 		}
-		
-		if(color == color.WHITE) {
-			if((y - currentY <=  yRange && y - currentY > 0 ) && (x == currentX)) {
-				possible = true;
-			}		
-		}else {
-			if((currentY - y <=  yRange && currentY - y > 0) && (x == currentX)) {
-				possible = true;
-			}		
-		}
-		
-		return possible;
 	}
 }

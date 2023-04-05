@@ -1,5 +1,7 @@
 package Pieces;
 
+import Main.Board;
+
 public class Knights{ //W 2658 B 265E
 	
 	public Knight left;
@@ -12,9 +14,9 @@ public class Knights{ //W 2658 B 265E
 	}
 	
 	private void setInitialPos(Color color) {
-		int y = color == Color.WHITE ? 0 : 7;
+		int x = color == Color.WHITE ? 0 : 7;
 		
-		left.setInitialPos(y, 1);
-		right.setInitialPos(y, 6);
+		left.setInitialPos(1, x);
+		right.setInitialPos(6, x);
 	}
 }
