@@ -13,37 +13,46 @@ public class Match {
 	
 	public Board board;
 	
+	private Color turn = Color.WHITE;
+	
 	public Match() {
 		blackPieces = createPieces(Color.BLACK);
 		whitePieces = createPieces(Color.WHITE);
 		board = new Board(blackPieces, whitePieces);
 
-		while(!exit) {
+		while(!exit) {			
 			boolean unblocked = false;
+			boolean rightColor = false;
 			int currentX = 0;
 			int currentY = 0;
 			
 			board.printBoard(selectedPiece); //PRINT NULL
 			
 			while(!unblocked) {
-				board.resetPossibleMovements();
-				System.out.print("Choose the tile: ");	
-				String currentTile = getTile(); //PICK THE SQUARE
-				currentY = board.convertInput(currentTile, Type.Y);
-				currentX = board.convertInput(currentTile, Type.X);
-				
-				selectedPiece = board.getPiece(currentY, currentX); //GET THE PIECE IN THAT SQUARE
-				
-				board.printBoard(selectedPiece); //PRINT WITH SELECTED PIECE
-				
-			    //printTest();
-			    
-			    unblocked = checkUnblocked(currentY, currentX);
-			    
-			    if(!unblocked) {
-			    	System.out.printf("This %s can't move%n", selectedPiece.getName());
-			    }			    
-			}			
+				while(!rightColor) {
+					board.resetPossibleMovements();
+					System.out.print("Choose the tile: ");	
+					String currentTile = getTile(); //PICK THE SQUARE
+					currentY = board.convertInput(currentTile, Type.Y);
+					currentX = board.convertInput(currentTile, Type.X);
+					
+					selectedPiece = board.getPiece(currentY, currentX); //GET THE PIECE IN THAT SQUARE
+					
+					if(selectedPiece.color == turn) {
+						rightColor = true;
+						board.printBoard(selectedPiece); //PRINT WITH SELECTED PIECE
+					    
+					    unblocked = checkUnblocked(currentY, currentX);
+					    
+					    if(!unblocked) {
+					    	rightColor = false;
+					    	System.out.printf("This %s can't move%n", selectedPiece.getName());
+					    }
+					}else {
+						System.out.println("It's " + turn + "'s turn.");
+					}
+				}
+			}
 
 			System.out.printf("Tile to move to: ");
 			String nextTile = getTile(); //PICK TILE TO MOVE TO
@@ -53,6 +62,12 @@ public class Match {
 			board.resetPossibleMovements();
 			selectedPiece = null;
 			System.out.println("_______________________________________");
+			
+			if(turn == Color.WHITE) {
+				turn = Color.BLACK;
+			}else {
+				turn = Color.WHITE;
+			}
 		}
 	}
 	
