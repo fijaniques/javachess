@@ -15,9 +15,10 @@ public class Board {
 	public Type type;
 	
 	public boolean[][] possibleMovements = new boolean[8][8];
+	public boolean[][] possibleCaptures = new boolean[8][8];
 	
 	Scanner scan;
-	public Piece[][] tiles = new Piece[8][8];
+	public Piece[][] squares = new Piece[8][8];
 	
 	public ArrayList<Piece> blackPieces;
 	public ArrayList<Piece> whitePieces;
@@ -29,8 +30,8 @@ public class Board {
 	}
 	
 	public void initializeBoard() {
-		blackPieces.forEach(piece -> tiles[piece.currentY][piece.currentX] = piece);
-		whitePieces.forEach(piece -> tiles[piece.currentY][piece.currentX] = piece);
+		blackPieces.forEach(piece -> squares[piece.currentY][piece.currentX] = piece);
+		whitePieces.forEach(piece -> squares[piece.currentY][piece.currentX] = piece);
 	}
 	
 	public void printBoard(Piece selectedPiece) {
@@ -43,9 +44,9 @@ public class Board {
 				String p = "\u2659";
 				String color = TRANSPARENCY;
 				
-				if(tiles[y][x] != null) { //SE CASA ESTIVER OCUPADA
-					p = tiles[y][x].getSymbol();
-					color = tiles[y][x].getColor() == Color.WHITE ? WHITE : YELLOW;
+				if(squares[y][x] != null) { //SE CASA ESTIVER OCUPADA
+					p = squares[y][x].getSymbol();
+					color = squares[y][x].getColor() == Color.WHITE ? WHITE : YELLOW;
 				}else { //SE CASA ESTIVER VAZIA
 					if(possibleMovements[y][x]) {
 						p = selectedPiece.getSymbol();
@@ -59,11 +60,15 @@ public class Board {
 	}
 	
 	public Piece getPiece(int currentY, int currentX) {
-		return tiles[currentY][currentX];
+		return squares[currentY][currentX];
 	}
 
 	public boolean getPossibleMovements(int y, int x) {
-		return tiles[y][x] == null ? true: false;
+		return squares[y][x] == null ? true: false;
+	}
+	
+	public boolean getPossibleCaptures(int y, int x) {
+		return possibleCaptures[y][x];
 	}
 	
 	public void resetPossibleMovements() {
@@ -74,8 +79,20 @@ public class Board {
 		}
 	}
 	
+	public void resetPossibleCaptures() {
+		for(int x = 0; x < 8; x++) {
+			for(int y = 0; y < 8; y++) {
+				possibleCaptures[y][x] = false;
+			}
+		}
+	}
+	
 	public void setPossibleMovements(int y, int x, boolean possible) {
 		possibleMovements[y][x] = possible;
+	}
+	
+	public void setPossibleCaptures(int y, int x) {
+		possibleCaptures[y][x] = true;
 	}
 	
 	public int convertInput(String tile, Type type) {
@@ -88,11 +105,11 @@ public class Board {
 	
 	public void movePiece(Piece p, int currentY, int currentX, int nextY, int nextX) {
 		if(possibleMovements[nextY][nextX]) {
-			tiles[nextY][nextX] = p;
+			squares[nextY][nextX] = p;
 			p.currentY = nextY;
 			p.currentX = nextX;
 			p.setMoved(true);
-			tiles[currentY][currentX] = null;
+			squares[currentY][currentX] = null;
 		}else {
 			System.out.println("Can't move " + p.getName() +" there!");
 		}

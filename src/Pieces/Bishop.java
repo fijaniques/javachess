@@ -24,6 +24,10 @@ public class Bishop extends Piece{ //W 2657 B 265D
 				nextY++;
 				if(board.getPiece(nextY, nextX) == null) {
 					board.setPossibleMovements(nextY, nextX, true);
+				}else if(board.getPiece(nextY, nextX) != null && 
+						board.getPiece(nextY, nextX).getColor() != getColor()){
+					board.setPossibleCaptures(nextY, nextX);
+					break;
 				}else {
 					break;
 				}
@@ -41,6 +45,10 @@ public class Bishop extends Piece{ //W 2657 B 265D
 				nextY--;
 				if(board.getPiece(nextY, nextX) == null) {
 					board.setPossibleMovements(nextY, nextX, true);
+				}else if(board.getPiece(nextY, nextX) != null && 
+						board.getPiece(nextY, nextX).getColor() != getColor()){
+					board.setPossibleCaptures(nextY, nextX);
+					break;
 				}else {
 					break;
 				}
@@ -58,6 +66,10 @@ public class Bishop extends Piece{ //W 2657 B 265D
 				nextY++;
 				if(board.getPiece(nextY, nextX) == null) {
 					board.setPossibleMovements(nextY, nextX, true);
+				}else if(board.getPiece(nextY, nextX) != null && //SE TIVER PEÇA
+						board.getPiece(nextY, nextX).getColor() != getColor()){ //SE A COR FOR DIFERENTE
+					board.setPossibleCaptures(nextY, nextX);
+					break;
 				}else {
 					break;
 				}
@@ -75,6 +87,10 @@ public class Bishop extends Piece{ //W 2657 B 265D
 				nextY--;
 				if(board.getPiece(nextY, nextX) == null) {
 					board.setPossibleMovements(nextY, nextX, true);
+				}else if(board.getPiece(nextY, nextX) != null && 
+						board.getPiece(nextY, nextX).getColor() != getColor()){
+					board.setPossibleCaptures(nextY, nextX);
+					break;
 				}else {
 					break;
 				}

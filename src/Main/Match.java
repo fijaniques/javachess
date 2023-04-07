@@ -9,6 +9,8 @@ public class Match {
 	private ArrayList<Piece> blackPieces;
 	private ArrayList<Piece> whitePieces;
 	
+	String letters = "ABCDEFGH";
+	
 	Piece selectedPiece = null;
 	
 	public Board board;
@@ -19,6 +21,7 @@ public class Match {
 		blackPieces = createPieces(Color.BLACK);
 		whitePieces = createPieces(Color.WHITE);
 		board = new Board(blackPieces, whitePieces);
+		
 
 		while(!exit) {			
 			boolean unblocked = false;
@@ -31,10 +34,10 @@ public class Match {
 			while(!unblocked) {
 				while(!rightColor) {
 					board.resetPossibleMovements();
-					System.out.print("Choose the tile: ");	
-					String currentTile = getTile(); //PICK THE SQUARE
-					currentY = board.convertInput(currentTile, Type.Y);
-					currentX = board.convertInput(currentTile, Type.X);
+					System.out.print("Choose the square: ");	
+					String currentSquare = getSquare(); //PICK THE SQUARE
+					currentY = board.convertInput(currentSquare, Type.Y);
+					currentX = board.convertInput(currentSquare, Type.X);
 					
 					selectedPiece = board.getPiece(currentY, currentX); //GET THE PIECE IN THAT SQUARE
 					
@@ -42,23 +45,31 @@ public class Match {
 						rightColor = true;
 						board.printBoard(selectedPiece); //PRINT WITH SELECTED PIECE
 					    
-					    unblocked = checkUnblocked(currentY, currentX);
+					    unblocked = getUnblocked(currentY, currentX);
 					    
 					    if(!unblocked) {
 					    	rightColor = false;
-					    	System.out.printf("This %s can't move%n", selectedPiece.getName());
+					    	System.out.println("The " + 
+					    			turn.toString().toLowerCase() + " " +
+					    				selectedPiece.getName().replace("Pieces.", "").toLowerCase() + 
+					    					" can't move" );
 					    }
 					}else {
-						System.out.println("It's " + turn + "'s turn.");
+						System.out.println("It's " + turn.toString().toLowerCase() + "'s turn.");
 					}
 				}
 			}
 
-			System.out.printf("Tile to move to: ");
-			String nextTile = getTile(); //PICK TILE TO MOVE TO
-			int nextY = board.convertInput(nextTile, Type.Y);
-			int nextX = board.convertInput(nextTile, Type.X);
-			board.movePiece(selectedPiece, currentY, currentX, nextY, nextX); //MOVE SELECTED PIECE TO THAT TILE
+			System.out.print("Move " + 
+					turn.toString().toLowerCase() + " " 
+						+ selectedPiece.getName().replace("Pieces.", "").toLowerCase() + 
+							" from " +
+								letters.charAt(selectedPiece.getCurrentY()) + 
+									(selectedPiece.getCurrentX() +1) + " to: ");
+			String nextSquare = getSquare(); //PICK TILE TO MOVE TO
+			int nextY = board.convertInput(nextSquare, Type.Y);
+			int nextX = board.convertInput(nextSquare, Type.X);
+			board.movePiece(selectedPiece, currentY, currentX, nextY, nextX); //MOVE SELECTED PIECE TO THAT SQUARE
 			board.resetPossibleMovements();
 			selectedPiece = null;
 			System.out.println("_______________________________________");
@@ -71,10 +82,22 @@ public class Match {
 		}
 	}
 	
-	public String getTile() {
+	public String getSquare() {
 		Scanner scan = new Scanner(System.in);
-		String tile = scan.nextLine();
-		return tile;
+		String square = scan.nextLine().toUpperCase();
+		return square;
+	}
+	
+	public boolean getUnblocked(int currentY, int currentX) {
+		boolean unblocked = false;
+		for(int x = 0; x < 8; x++) { 
+			for(int y = 0; y < 8; y++) {
+				if(board.possibleMovements[y][x]) {
+					unblocked = true;
+				}
+			}
+		}
+		return unblocked;
 	}
 	
 	public ArrayList<Piece> createPieces(Color color) {
@@ -101,17 +124,7 @@ public class Match {
 		return pieces;
 	}
 	
-	public boolean checkUnblocked(int currentY, int currentX) {
-		boolean unblocked = false;
-		for(int x = 0; x < 8; x++) { 
-			for(int y = 0; y < 8; y++) {
-				if(board.possibleMovements[y][x]) {
-					unblocked = true;
-				}
-			}
-		}
-		return unblocked;
-	}
+	
 	
 	public void printTest() {
 		for(int x = 0; x < 8; x++) { 
